@@ -1,4 +1,14 @@
-<h1>RateMyClass</h1>
-<hr>
-<!-- ADD SEARCH BAR-->
- 
+<div class="header">
+    <h1>RateMyClass</h1>
+    <div *ngIf="loginState.length < 2">
+        <app-auth></app-auth>
+    </div>
+    <div *ngIf="loginState">
+        {{this.loginState[0]}}
+    </div>
+    <hr>
+</div>
+
+<div class = "content">
+    <app-searchbar></app-searchbar>    
+</div>
