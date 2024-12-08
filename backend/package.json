@@ -1,0 +1,22 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Backend for the Rate My Class app.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ELPhanNYC/ratemyclass.git"
+  },
+  "author": "Ethan L Phan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ELPhanNYC/ratemyclass/issues"
+  },
+  "homepage": "https://github.com/ELPhanNYC/ratemyclass#readme",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
