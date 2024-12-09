@@ -1,1 +1,11 @@
-<p>class works!</p>
+<app-simple-header></app-simple-header>
+<div>
+    <p><a routerLink="/">< Go Back to Search</a></p>
+    <p>{{this.courseCode}}: {{this.courseTitle}}</p>
+    <div *ngIf="this.loginStatus.length == 2">
+        <button type="submit" (click)="navTo('addRating/'+this.courseCode)">Create a Rating</button>
+    </div>
+    <div>
+        <p>There are no ratings for this course.</p>
+    </div>
+</div>

@@ -1,0 +1,34 @@
+<app-simple-header></app-simple-header>
+<div *ngIf="loginState.length < 2">
+    <p>You need to sign in before you can add a class. <a routerLink="/login">Sign in here</a>.</p>
+</div>
+<div *ngIf="loginState.length == 2">
+    <form [formGroup]="courseForm" (ngSubmit)="onSubmit()">
+        <!-- Course Code Input -->
+        <input
+          id="courseCode"
+          formControlName="courseCode"
+          placeholder="Course Code"
+        />
+        <div *ngIf="courseForm.get('courseCode')?.invalid && courseForm.get('courseCode')?.touched" style="color: red;">
+          Course code is invalid, please use a known course code (e.g., CSE115).
+        </div>
+        <br>
+        <input
+          id="courseTitle"
+          formControlName="courseTitle"
+          placeholder="Course Title"
+          (blur)="capitalizeTitle()"
+        />
+        <div *ngIf="courseForm.get('courseTitle')?.invalid && courseForm.get('courseTitle')?.touched" style="color: red;">
+          Course title is required (e.g., Introduction to Computer Science I).
+        </div>
+    
+        <br>
+
+        <button type="submit" [disabled]="courseForm.invalid">Add Class</button>
+      </form>
+      <div *ngIf = "this.status != ''">
+        <p>{{this.status}}</p>
+      </div>
+</div>

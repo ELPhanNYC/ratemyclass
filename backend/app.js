@@ -16,7 +16,6 @@ database.on("error", (error) =>
 database.once("open", () => console.log("Database connected"));
 
 // Define data schemas (document formatting)
-// Uniqueness is checked server-side
 const userSchema = new mongoose.Schema({
   username: {
     required: true,
@@ -39,59 +38,48 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-const taskSchema = new mongoose.Schema({
-  username: {
+const classSchema = new mongoose.Schema({
+  code: {
     required: true,
     type: String,
   },
   title: {
     required: true,
     type: String,
-  },
-  dueDate: {
-    type: Date,
-  },
-  include: {
-    require: true,
-    type: Boolean,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
+  }
 });
 
-const statsSchema = new mongoose.Schema({
-  username: {
+const ratingSchema = new mongoose.Schema({
+  code: {
     required: true,
     type: String,
   },
-  timeStudy: {
-    /* Cummulative time studying (Pomodoro session based)  */ type: Number,
+  rating: {
+    required: true,
+    type: Number,
   },
-  completedTasks: {
-    /* Number of tasks removed (Making assumption that all input tasks are correct) */ type: Number,
+  difficulty: {
+    required: true,
+    type: Number,
   },
-  tasksLifetime: {
-    /* Total Number of tasks (active and inactive) */ type: Number,
+  professor: {
+    required: true,
+    type: String,
   },
-  NumberSessions: {
-    /* Number of Pomodoro timers started AND completed */ type: Number,
+  comments: {
+    required: true,
+    type: String,
   },
-  streak: {
-    /* Current consecutive Number days on the application */ type: Number,
-  },
-  longestStreak: {
-    /* Max consecutive Number days on the application */ type: Number,
-  },
-  activeDays: { /* Number days on the application (lifetime)*/ type: Number },
-  lastDateOnline: { type: Date },
+  createdBy: {
+    required: true,
+    type: String,
+  }
 });
 
 // Define cursor to the collection
 const User = mongoose.model("User", userSchema);
-const Task = mongoose.model("Task", taskSchema);
-const Stats = mongoose.model("Stats", statsSchema);
+const Class = mongoose.model("Class", classSchema);
+const Rating = mongoose.model("Rating", ratingSchema);
 
 app.use(express.json());
 
@@ -123,6 +111,153 @@ const authenticateToken = async (req, res, next) => {
 
 app.get("/api/test", async (req, res) => {
   res.status(200).json("Hello, World!");
+});
+
+app.post("/api/login", async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: "Invalid email or password" });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid email or password" });
+    }
+
+    const accessToken = generateAccessToken();
+
+    user.accessToken = accessToken;
+    await user.save();
+
+    res.status(200).json({ username: user.username, accessToken: accessToken });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+
+app.post("/api/register", async (req, res) => {
+  const { username, email, password } = req.body;
+
+  try {
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "User already exists" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = new User({
+      username,
+      email,
+      password: hashedPassword,
+    });
+
+    const savedUser = await newUser.save();
+    res.status(201).json({messages: 'success'});
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.post("/api/addClass", async (req, res) => {
+  const { courseCode, courseTitle } = req.body;
+
+  try {
+    const existingClass = await Class.findOne({ code: courseCode });
+    if (existingClass) {
+      return res.status(400).json({ message: "Course already exists." });
+    }
+
+
+    const newClass = new Class({
+      code: courseCode,
+      title: courseTitle
+    });
+
+    const savedClass = await newClass.save();
+    res.status(201).json({messages: 'success'});
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.get('/api/getCourses', async (req, res) => {
+  const query = req.query.query;
+
+  if (!query) {
+    return res.status(400).json({ error: "Query parameter is required" });
+  }
+
+  try {
+    const courses = await Class.find({
+      code: { $regex: query, $options: 'i' }
+    }).limit(10);
+
+    res.json(courses.map(course => course.code));
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.get('/api/getTitle/:courseCode', async (req, res) => {
+  const { courseCode } = req.params;
+
+  try {
+    const course = await Class.findOne({ code: courseCode });
+
+    if (!course) {
+      return res.status(404).json({ message: 'Course not found' });
+    }
+    res.status(200).json({ courseTitle: course.title });
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error', error: error.message });
+  }
+});
+
+app.get('/api/getRatings/:courseCode', async (req, res) => {
+  const { courseCode } = req.params;
+
+  try {
+    const ratings = await Rating.find({ code: courseCode });
+    res.status(200).json(ratings);
+  } catch (error) {
+    res.status(500).json({ message: 'Error retrieving ratings', error: error.message });
+  }
+});
+
+app.post('/api/rateCourse', async (req, res) => {
+  const { code, rating, difficulty, professor, comments, createdBy } = req.body;
+
+  if (!code || !rating || !difficulty || !professor || !comments || !createdBy) {
+    return res.status(400).json({ message: 'All fields are required' });
+  }
+
+  try {
+
+    const newRating = new Rating({
+      code,
+      rating,
+      difficulty,
+      professor,
+      comments,
+      createdBy,
+    });
+
+    const savedRating = await newRating.save();
+
+    res.status(201).json({message: 'success',});
+
+  } catch (error) {
+
+    console.error(error);
+    
+    res.status(500).json({ message: 'Error saving rating', error: error.message });
+  }
 });
 
 

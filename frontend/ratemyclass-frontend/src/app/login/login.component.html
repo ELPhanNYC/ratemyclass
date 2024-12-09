@@ -1,7 +1,4 @@
-<div class="header">
-  <h1><a routerLink="/">RateMyClass</a></h1>
-  <hr>
-</div>
+<app-simple-header></app-simple-header>
 <h2>Login</h2>
 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
   <input id="email" type="text" formControlName="email" placeholder="Email" />

@@ -7,11 +7,12 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { Login } from '../login';
 import { supervisor } from '../storage.service';
 import { ApiService } from '../api.service';
+import { SimpleHeaderComponent } from "../simple-header/simple-header.component";
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [RouterModule, ReactiveFormsModule, CommonModule, HttpClientModule],
+  imports: [RouterModule, ReactiveFormsModule, CommonModule, HttpClientModule, SimpleHeaderComponent],
   providers: [ApiService],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
@@ -50,17 +51,15 @@ export class LoginComponent {
         email: this.getEmail(),
         password: this.getPassword()
       };
-      
-      console.log(payload)
 
       this.apiService.sendLogin(payload)
         .subscribe((response: Login) => {       
           supervisor.setItem('username', response.username, 1440);
           supervisor.setItem('token', response.accessToken, 1440);
-          this.router.navigate(['/']);
+          this.router.navigate(['']);
+        }, error => {
+          console.log(error);
         });
-    } else {
-      console.log('Form is invalid');
     }
   }
 }

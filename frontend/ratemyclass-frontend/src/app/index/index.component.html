@@ -3,12 +3,14 @@
     <div *ngIf="loginState.length < 2">
         <app-auth></app-auth>
     </div>
-    <div *ngIf="loginState">
-        {{this.loginState[0]}}
+    <div *ngIf="loginState.length == 2">
+        <p>Hello, {{this.loginState[0]}}!</p>
+        <button (click)="logout()">Logout</button>
     </div>
     <hr>
 </div>
 
 <div class = "content">
-    <app-searchbar></app-searchbar>    
+    <app-searchbar></app-searchbar>
+    <p>Can't find the class you are looking for? <a routerLink="/addClass"> Add that class here!</a></p>
 </div>

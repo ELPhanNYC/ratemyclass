@@ -5,11 +5,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../api.service';
+import { SimpleHeaderComponent } from "../simple-header/simple-header.component";
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, HttpClientModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, HttpClientModule, SimpleHeaderComponent],
   providers: [ApiService],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
@@ -69,13 +70,10 @@ export class RegisterComponent {
         username: this.getUsername(),
         password: this.getPassword()
       };
-      
-      console.log(payload)
 
       this.apiService.sendRegister(payload)
         .subscribe(response => {
-          alert('Registration Successful!');
-          this.router.navigate(['/login']);
+          this.router.navigate(['login']);
         }, error => {
           console.error('Error:', error);
         });

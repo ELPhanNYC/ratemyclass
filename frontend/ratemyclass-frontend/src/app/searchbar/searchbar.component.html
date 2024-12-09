@@ -1,4 +1,17 @@
 <div class="searchbar">
-    <input type="text" placeholder="Search for a class ...">
-    <button type="submit">Search</button>
-</div>
+    <form [formGroup]="searchForm">
+      <input
+        type="text"
+        formControlName="searchQuery"
+        placeholder="Search for a class ... "
+      />
+      <button type="submit" (click)="navTo('class/' + this.getCode())">Go</button>
+    </form>
+  
+    <ul *ngIf="filteredCourses.length > 0" class="results">
+      <li *ngFor="let course of filteredCourses" (click)="selectCourse(course)">
+        {{ course }}
+      </li>
+    </ul>
+  </div>
+  
