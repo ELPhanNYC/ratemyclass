@@ -1,16 +1,29 @@
 <div class="header">
-    <h1>RateMyClass</h1>
-    <div *ngIf="loginState.length < 2">
-        <app-auth></app-auth>
+    <div>
+        <img src="../../assets/rmc-logo.png" class="logo">
+        <h1 class="removable">RateMyClass</h1>
     </div>
-    <div *ngIf="loginState.length == 2">
-        <p>Hello, {{this.loginState[0]}}!</p>
-        <button (click)="logout()">Logout</button>
+    <div class="right">
+        <div *ngIf="loginState.length < 2">
+            <app-auth></app-auth>
+        </div>
+        <div *ngIf="loginState.length == 2" class="loggedin">
+            <p>Hello, {{this.loginState[0]}}!</p>
+            <button (click)="logout()" class="logout">Logout</button>
+        </div>
     </div>
-    <hr>
 </div>
-
 <div class = "content">
+
+    <h2>What is RateMyClass?</h2>
+
+    <div class="about-app">
+        <p class="text-center">RateMyClass is an app for students by students. Our goal is to provide students with easy access to course feedback from other students allowing them to make an informed choice about whether or not to take a course.</p>
+
+        <p class="text-center">This project stems from the fact that the University at Buffalo does not release course evaluations, requiring students to find alternative sources to obtain feedback about courses.</p>
+    </div>
+
     <app-searchbar></app-searchbar>
-    <p>Can't find the class you are looking for? <a routerLink="/addClass"> Add that class here!</a></p>
+    <p class="text-center">Can't find the class you are looking for?<br><a routerLink="/addClass"> Add that class here!</a></p>
+
 </div>

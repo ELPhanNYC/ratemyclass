@@ -1,19 +1,93 @@
+.searchbar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%; /* Ensures the search bar spans full width */
+  max-width: 800px; /* Allows the search bar to expand up to 800px */
+  margin: 20px auto;
+  padding: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box; /* Includes padding in width calculations */
+}
 
-  .results {
-    position: absolute;
-    background-color: white;
-    border: 1px solid #ccc;
-    overflow-y: auto;
-    list-style: none;
-    margin: 0;
-    padding: 0;
+.searchbar form {
+  display: flex;
+  width: 100%; /* Matches the parent's width */
+  gap: 8px;
+}
+
+.searchbar input[type="text"] {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  outline: none;
+  font-family: 'Jua';
+}
+
+.searchbar input[type="text"]:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 3px rgba(0, 123, 255, 0.5);
+}
+
+.searchbar button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: #00a69c;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-family: 'Jua';
+}
+
+.searchbar button:hover {
+  background-color: #005bbb;
+}
+
+.results {
+  width: 100%;
+  margin-top: 10px;
+  list-style: none;
+  padding: 0;
+  border-radius: 4px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-height: 200px;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.results li {
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.results li:hover {
+  background-color: #f1f1f1;
+}
+
+.results li:active {
+  background-color: #007bff;
+  color: white;
+}
+
+@media (max-width: 480px) {
+  .searchbar {
+    max-width: 100%;
+    padding: 10px;
   }
-  
+
+  .searchbar button {
+    padding: 10px;
+    font-size: 14px;
+  }
+
   .results li {
-    cursor: pointer;
+    font-size: 14px;
   }
-  
-  .results li:hover {
-    background-color: #f0f0f0;
-  }
-  
+}

@@ -1,0 +1,62 @@
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.about-app {
+    margin-left: 5rem;
+    margin-right: 5rem;
+}
+
+.loggedin {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+  
+.loggedin p {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.logout {
+    background-color: #00a69c;
+    color: white;
+    min-width: 5rem;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Jua';
+    font-size: 1rem;
+    padding: 0.75rem;
+    transition-duration: 0.4s;
+}
+    
+.logout:hover {
+    background-color: white;
+    color: black;
+    border: 3px solid #00a69c;
+}
+
+
+@media (max-width: 480px) {
+
+    .removable {
+        display: none;
+    }
+
+    .content {
+        p {
+            font-size: 0.75rem;
+        }
+        .about-app {
+            margin-left: 0.25rem;
+            margin-right: 0.25rem;
+        }
+    }
+}
