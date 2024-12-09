@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { ApiService } from '../api.service';
 import { Course } from '../course';
 import { CommonModule } from '@angular/common';
+import { Rating } from '../rating';
 
 @Component({
   selector: 'app-class',
@@ -19,6 +20,10 @@ export class ClassComponent {
 
   courseCode: string = '';
   courseTitle: string ='';
+  ratings: Rating[] = [];
+  averageRating: number = 0;
+  averageDifficulty: number = 0;
+  numberRatings: number = 0;
 
   constructor(private route: ActivatedRoute, private apiService: ApiService, private router: Router) {}
 
@@ -27,6 +32,7 @@ export class ClassComponent {
       this.courseCode = params['slug'];
       this.getCourseTitle();
     });
+    this.getCourseRatings();
   }
 
   loginStatus = this.apiService.checkLogInStatus()
@@ -40,9 +46,30 @@ export class ClassComponent {
     });
   }
 
-  // getCourseRatings():void {
+  getCourseRatings():void {
+    this.apiService.getRatingsForCourse(this.courseCode)
+    .subscribe((response: Rating[]) => {
+        this.ratings = response;
+        if(this.ratings.length > 0){
+          this.computeStatistics();
+        }
+      }, error =>{
+        console.log(error);
+    });
+  }
 
-  // }
+  computeStatistics(): void {
+    this.numberRatings = this.ratings.length;
+    let accRating = 0;
+    let accDiff = 0;
+    for(let rating of this.ratings){
+      accRating += rating.rating;
+      accDiff += rating.difficulty;
+    }
+    this.averageRating = accRating / this.numberRatings;
+    this.averageDifficulty = accDiff / this.numberRatings;
+
+  }
 
   navTo(route: string): void {
     this.router.navigate([route])

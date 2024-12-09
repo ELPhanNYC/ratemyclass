@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import { Login } from "./login";
 import { supervisor } from "./storage.service";
 import { Course } from "./course";
+import { Rating } from "./rating";
 
 @Injectable({
   providedIn: "root",
@@ -37,7 +38,7 @@ export class ApiService {
   }
   
   getRatingsForCourse(courseCode: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.url}api/getRatings/${courseCode}`);
+    return this.http.get<Rating[]>(`${this.url}api/getRatings/${courseCode}`);
   }
   
   sendRating(data: { code: string; rating: number; difficulty: number; professor: string; comments: string; createdBy: string }) {

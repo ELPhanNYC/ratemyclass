@@ -4,8 +4,22 @@
     <p>{{this.courseCode}}: {{this.courseTitle}}</p>
     <div *ngIf="this.loginStatus.length == 2">
         <button type="submit" (click)="navTo('addRating/'+this.courseCode)">Create a Rating</button>
+        <div *ngIf="this.ratings.length > 0">
+            <p>Course Overview:</p>
+            <p>Average Rating: {{this.averageRating}}</p>
+            <p>Average Difficulty: {{this.averageDifficulty}}</p>
+        </div>
     </div>
-    <div>
+    <div *ngIf="this.ratings.length < 1">
         <p>There are no ratings for this course.</p>
+    </div>
+    <br>
+    <div *ngFor="let rating of ratings">
+        <hr>
+        <p>Rating: {{rating.rating}}</p>
+        <p>Difficulty: {{rating.difficulty}}</p>
+        <p>Instructor: {{rating.professor}}</p>
+        <p>Comments: {{rating.comments}}</p>
+        <hr>
     </div>
 </div>

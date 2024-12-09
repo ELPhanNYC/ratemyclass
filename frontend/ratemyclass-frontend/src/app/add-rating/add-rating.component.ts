@@ -42,12 +42,11 @@ export class AddRatingComponent {
 
       this.apiService.sendRating(ratingData).subscribe(
         (response) => {
-          console.log('Rating submitted:', response);
-          // Handle success (show a message, reset the form, etc.)
+          console.log('Rating submitted.')
+          this.router.navigate(['class/'+this.courseCode])
         },
         (error) => {
           console.log('Error submitting rating:', error);
-          // Handle error (show an error message, etc.)
         }
       );
     } else {
