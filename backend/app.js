@@ -92,7 +92,6 @@ const generateAccessToken = () => {
 };
 
 const authenticateToken = async (req, res, next) => {
-  console.log(req)
   const token = req.headers["authorization"];
 
   if (!token) return res.sendStatus(401);

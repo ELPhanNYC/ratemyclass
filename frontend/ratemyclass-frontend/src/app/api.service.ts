@@ -51,7 +51,6 @@ export class ApiService {
   
   sendRating(data: { code: string; rating: number; difficulty: number; professor: string; comments: string; createdBy: string }) {
     const token = supervisor.getItem("token");
-    console.log(token);
     if (token) {
       const headers = new HttpHeaders({
         authorization: token,
