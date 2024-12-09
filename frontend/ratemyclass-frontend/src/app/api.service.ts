@@ -24,7 +24,15 @@ export class ApiService {
   }
 
   sendClass(data: {courseCode: string; courseTitle: string}) {
-    return this.http.post(`${this.url}api/addClass`, data);
+    const token = supervisor.getItem("token");
+    if (token) {
+      const headers = new HttpHeaders({
+        authorization: token,
+      });
+      return this.http.post(`${this.url}api/addClass`, data, {headers});
+    } else {
+      return new Observable<Object>();
+    }
   }
 
   getCourses(query: string) {
@@ -42,7 +50,16 @@ export class ApiService {
   }
   
   sendRating(data: { code: string; rating: number; difficulty: number; professor: string; comments: string; createdBy: string }) {
-    return this.http.post(`${this.url}api/rateCourse`, data);
+    const token = supervisor.getItem("token");
+    console.log(token);
+    if (token) {
+      const headers = new HttpHeaders({
+        authorization: token,
+      });
+      return this.http.post(`${this.url}api/rateCourse`, data, {headers});
+    } else {
+      return new Observable<Object>();
+    }
   }
 
   logout() {

@@ -92,6 +92,7 @@ const generateAccessToken = () => {
 };
 
 const authenticateToken = async (req, res, next) => {
+  console.log(req)
   const token = req.headers["authorization"];
 
   if (!token) return res.sendStatus(401);
@@ -163,7 +164,7 @@ app.post("/api/register", async (req, res) => {
   }
 });
 
-app.post("/api/addClass", async (req, res) => {
+app.post("/api/addClass", authenticateToken, async (req, res) => {
   const { courseCode, courseTitle } = req.body;
 
   try {
@@ -230,7 +231,7 @@ app.get('/api/getRatings/:courseCode', async (req, res) => {
   }
 });
 
-app.post('/api/rateCourse', async (req, res) => {
+app.post('/api/rateCourse', authenticateToken, async (req, res) => {
   const { code, rating, difficulty, professor, comments, createdBy } = req.body;
 
   if (!code || !rating || !difficulty || !professor || !comments || !createdBy) {
