@@ -1,8 +1,10 @@
 <app-simple-header></app-simple-header>
-<div *ngIf="loginState.length < 2">
+<div *ngIf="loginState.length < 2" class="content">
     <p>You need to sign in before you can add a class. <a routerLink="/login">Sign in here</a>.</p>
 </div>
-<div *ngIf="loginState.length == 2">
+<div class = "form-container">
+  <div *ngIf="loginState.length == 2" class = "addClassForm">
+    <h2>Add a Class</h2>
     <form [formGroup]="courseForm" (ngSubmit)="onSubmit()">
         <!-- Course Code Input -->
         <input
@@ -31,4 +33,5 @@
       <div *ngIf = "this.status != ''">
         <p>{{this.status}}</p>
       </div>
+  </div>
 </div>

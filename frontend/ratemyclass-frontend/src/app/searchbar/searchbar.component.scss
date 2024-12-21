@@ -2,18 +2,17 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%; /* Ensures the search bar spans full width */
-  max-width: 800px; /* Allows the search bar to expand up to 800px */
+  width: 100%;
   margin: 20px auto;
   padding: 10px;
   background-color: #f9f9f9;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box; /* Includes padding in width calculations */
+  box-sizing: border-box;
 }
 
 .searchbar form {
   display: flex;
-  width: 100%; /* Matches the parent's width */
+  width: 100%;
   gap: 8px;
 }
 

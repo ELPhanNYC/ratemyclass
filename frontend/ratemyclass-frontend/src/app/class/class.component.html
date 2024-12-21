@@ -1,25 +1,37 @@
 <app-simple-header></app-simple-header>
-<div>
+<div class="content">
     <p><a routerLink="/">< Go Back to Search</a></p>
-    <p>{{this.courseCode}}: {{this.courseTitle}}</p>
+    <h2>Ratings for {{this.courseCode}}: {{this.courseTitle}}</h2>
     <div *ngIf="this.loginStatus.length == 2">
         <button type="submit" (click)="navTo('addRating/'+this.courseCode)">Create a Rating</button>
-        <div *ngIf="this.ratings.length > 0">
-            <p>Course Overview:</p>
-            <p>Average Rating: {{this.averageRating}}</p>
-            <p>Average Difficulty: {{this.averageDifficulty}}</p>
-        </div>
     </div>
+    <div *ngIf="this.ratings.length > 0">
+        <h3 class = "accent">Course Statistics:</h3>
+        <p>Average Rating: {{this.averageRating}}</p>
+        <p>Average Difficulty: {{this.averageDifficulty}}</p>
+    </div>
+    <h3 class="accent">Ratings:</h3>
     <div *ngIf="this.ratings.length < 1">
         <p>There are no ratings for this course.</p>
     </div>
-    <br>
     <div *ngFor="let rating of ratings">
-        <hr>
-        <p>Rating: {{rating.rating}}</p>
-        <p>Difficulty: {{rating.difficulty}}</p>
-        <p>Instructor: {{rating.professor}}</p>
-        <p>Comments: {{rating.comments}}</p>
-        <hr>
+        <div class="post">
+            <div class="flex-container">
+                <p class="nu-val">
+                    <span class="bold">Rating</span>
+                    <span class="rating-val">{{rating.rating}}</span>
+                </p>
+                <p class="right">
+                    <span class="bold">Instructor:</span> {{rating.professor}}</p>
+            </div>
+            <div class="flex-container">
+                <p class="nu-val">
+                    <span class="bold">Difficulty</span>
+                    <span class="rating-val">{{rating.difficulty}}</span>
+                </p>
+                <p class="right"><span class="bold">Comments:</span> {{rating.comments}}</p>
+            </div>
+        </div>
+        <br>
     </div>
 </div>
